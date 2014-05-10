@@ -18,25 +18,24 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "Win32-Shortcut-Readlink",
-  "dist_version" => "0.01",
+  "dist_version" => "0.02",
   "license" => "perl",
   "module_name" => "Win32::Shortcut::Readlink",
   "recommends" => {},
   "recursive_test_files" => 1,
   "requires" => {
-    "base" => 0,
-    "perl" => "v5.10.0"
+    "perl" => "5.008000"
   },
   "script_files" => [],
   "test_requires" => {
-    "Test::More" => 0
+    "Test::More" => "0.82"
   }
 );
 
 
 my %fallback_build_requires = (
   "Module::Build" => "0.3601",
-  "Test::More" => 0
+  "Test::More" => "0.82"
 );
 
 

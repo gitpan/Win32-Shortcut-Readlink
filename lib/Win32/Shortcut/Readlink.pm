@@ -1,18 +1,14 @@
 package Win32::Shortcut::Readlink;
 
+require 5.008000;
 use strict;
 use warnings;
-use v5.10;
 use base qw( Exporter );
-use Carp qw( carp );
-use constant _is_cygwin  => $^O eq 'cygwin';
-use constant _is_mswin32 => $^O eq 'MSWin32';
-use constant _is_windows => _is_cygwin || _is_mswin32;
 
 BEGIN {
 
 # ABSTRACT: Make readlink work with shortcuts
-our $VERSION = '0.01'; # VERSION
+our $VERSION = '0.02'; # VERSION
 
   if($^O =~ /^(cygwin|MSWin32)$/)
   {
@@ -27,33 +23,23 @@ our @EXPORT_OK = qw( readlink );
 our @EXPORT    = @EXPORT_OK;
 
 
-sub _real_readlink (_);
-*_real_readlink = eval qq{ use 5.16.0; 1 } ? \&CORE::readlink : sub { CORE::readlink($_[0]) };
-
-sub readlink (_)
+if(eval { require 5.010000 })
 {
-  goto &_real_readlink unless _is_windows;
-  
-  if(defined $_[0] && $_[0] =~ /\.lnk$/ && -r $_[0])
-  {
-    my $target = _win32_resolve(_is_cygwin ? Cygwin::posix_to_win_path($_[0]) : $_[0]);
-    return $target if defined $target;
-  }
-
-  goto &_real_readlink if _is_cygwin;
-
-  # else is MSWin32
-  # emulate unix failues
-  if(-e $_[0])
-  {
-    $! = 22; # Invalid argument
-  }
-  else
-  {
-    $! = 2; # No such file or directory
-  }
-  
-  return;
+  require Win32::Shortcut::Readlink::Perl510;
+}
+elsif(eval { require 5.008000 })
+{
+  require Win32::Shortcut::Readlink::Perl58;
+}
+else
+{
+  # TODO: doesn't currently work.  Figure out
+  # if this is a limitation of Perl 5.6 or if
+  # I am just doing it wrong.  Fix or remove
+  # if appropriate.  BTW- dist requires 5.8
+  # so shouldn't even get in here if installed
+  # without hacking.
+  require Win32::Shortcut::Readlink::Perl56;
 }
 
 1;
@@ -70,7 +56,7 @@ Win32::Shortcut::Readlink - Make readlink work with shortcuts
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
@@ -86,7 +72,7 @@ This module doesn't do anything on any other platform, so you are free to make
 this a dependency, even if your module or script is going to run on non-Windows
 platforms.
 
-This module adjusted the behavior of readlink ONLY in the calling module, so
+This module adjusts the behavior of readlink ONLY in the calling module, so
 you shouldn't have to worry about breaking other modules that depend on the
 more traditional behavior.
 
@@ -111,11 +97,18 @@ on Perl 5.14 and earlier if you pass undef in as the argument to readlink, even 
 you have warnings turned off.  The work around is to make sure that you never pass
 undef to readlink on Perl 5.14 or earlier.
 
+Perl 5.8.x is somewhat supported.  The use of implicit C<$_> with readlink in
+Perl 5.8.x is not supported and will throw an exception.  It is recommended that
+you either upgrade to at least Perl 5.10 or pass an explicit argument of readlink
+when using this module.
+
 =head1 SEE ALSO
 
 =over 4
 
 =item L<Win32::Shortcut>
+
+=item L<Win32::Unicode::Shortcut>
 
 =item L<Win32::Symlink>
 

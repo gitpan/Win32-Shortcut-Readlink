@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-    version 0.01
+    version 0.02
 
 SYNOPSIS
 
@@ -20,7 +20,7 @@ DESCRIPTION
     make this a dependency, even if your module or script is going to run
     on non-Windows platforms.
 
-    This module adjusted the behavior of readlink ONLY in the calling
+    This module adjusts the behavior of readlink ONLY in the calling
     module, so you shouldn't have to worry about breaking other modules
     that depend on the more traditional behavior.
 
@@ -46,9 +46,16 @@ CAVEATS
     to make sure that you never pass undef to readlink on Perl 5.14 or
     earlier.
 
+    Perl 5.8.x is somewhat supported. The use of implicit $_ with readlink
+    in Perl 5.8.x is not supported and will throw an exception. It is
+    recommended that you either upgrade to at least Perl 5.10 or pass an
+    explicit argument of readlink when using this module.
+
 SEE ALSO
 
     Win32::Shortcut
+
+    Win32::Unicode::Shortcut
 
     Win32::Symlink
 

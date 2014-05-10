@@ -31,13 +31,12 @@
       },
       "runtime" : {
          "requires" : {
-            "base" : "0",
-            "perl" : "v5.10.0"
+            "perl" : "5.008000"
          }
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0"
+            "Test::More" : "0.82"
          }
       }
    },
@@ -53,6 +52,6 @@
          "web" : "https://github.com/plicease/win32-shortcut-readlink"
       }
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }
 

@@ -11,10 +11,14 @@ dist.ini
 inc/My/ModuleBuild.pm
 lib/Win32/Shortcut/Readlink.pm
 lib/Win32/Shortcut/Readlink.xs
+lib/Win32/Shortcut/Readlink/Perl510.pm
+lib/Win32/Shortcut/Readlink/Perl56.pm
+lib/Win32/Shortcut/Readlink/Perl58.pm
 t/00_diag.t
 t/00_diag.txt
 t/shortcut.t
 t/symlink.t
+t/symlink_not_perl58.t
 t/use.t
 typemap
 xs/ppport.h
@@ -32,4 +36,3 @@ xt/release/pod_spelling_system.t
 xt/release/release.yml
 xt/release/strict.t
 xt/release/unused_vars.t
-xt/release/version.t
